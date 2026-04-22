@@ -49,6 +49,8 @@
             pictureBox1 = new PictureBox();
             label1 = new Label();
             label2 = new Label();
+            pictureBox5 = new PictureBox();
+            pictureBox6 = new PictureBox();
             panel1.SuspendLayout();
             panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -58,6 +60,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -88,6 +92,7 @@
             button1.TabIndex = 12;
             button1.Text = "Далі";
             button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
             // 
             // panel4
             // 
@@ -253,6 +258,7 @@
             label4.TabIndex = 8;
             label4.Text = "Додавання, редагування справ";
             label4.TextAlign = ContentAlignment.TopCenter;
+            label4.Click += label4_Click;
             // 
             // label3
             // 
@@ -306,15 +312,41 @@
             label2.Text = "Вітаю користувачу!";
             label2.TextAlign = ContentAlignment.TopCenter;
             // 
+            // pictureBox5
+            // 
+            pictureBox5.Anchor = AnchorStyles.None;
+            pictureBox5.Image = Properties.Resources.diarybackgrou;
+            pictureBox5.Location = new Point(-547, 12);
+            pictureBox5.Name = "pictureBox5";
+            pictureBox5.Size = new Size(619, 899);
+            pictureBox5.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox5.TabIndex = 13;
+            pictureBox5.TabStop = false;
+            pictureBox5.Click += pictureBox5_Click;
+            // 
+            // pictureBox6
+            // 
+            pictureBox6.Anchor = AnchorStyles.None;
+            pictureBox6.Image = Properties.Resources.diarybackgrou;
+            pictureBox6.Location = new Point(1450, 541);
+            pictureBox6.Name = "pictureBox6";
+            pictureBox6.Size = new Size(619, 899);
+            pictureBox6.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox6.TabIndex = 14;
+            pictureBox6.TabStop = false;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(255, 237, 243);
             ClientSize = new Size(1527, 1153);
+            Controls.Add(pictureBox6);
+            Controls.Add(pictureBox5);
             Controls.Add(panel1);
             Name = "Form1";
             Text = "Form1";
+            Load += Form1_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             panel4.ResumeLayout(false);
@@ -329,6 +361,8 @@
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ResumeLayout(false);
         }
 
@@ -354,5 +388,7 @@
         private Label label10;
         private PictureBox pictureBox4;
         private Button button1;
+        private PictureBox pictureBox5;
+        private PictureBox pictureBox6;
     }
 }
