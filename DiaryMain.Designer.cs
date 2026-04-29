@@ -31,6 +31,12 @@
             DiaryButton = new PictureBox();
             pictureBox1 = new PictureBox();
             PanelOfButton = new Panel();
+            panel2 = new Panel();
+            overlayButton = new Button();
+            rescheduleButton = new Button();
+            panel1 = new Panel();
+            deleteButton = new Button();
+            editButton = new Button();
             dataGridView1 = new DataGridView();
             TitleColumn = new DataGridViewTextBoxColumn();
             DescColumn = new DataGridViewTextBoxColumn();
@@ -42,6 +48,8 @@
             ((System.ComponentModel.ISupportInitialize)DiaryButton).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             PanelOfButton.SuspendLayout();
+            panel2.SuspendLayout();
+            panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -70,12 +78,78 @@
             // PanelOfButton
             // 
             PanelOfButton.BackColor = Color.FromArgb(255, 251, 232);
+            PanelOfButton.Controls.Add(panel2);
+            PanelOfButton.Controls.Add(panel1);
             PanelOfButton.Controls.Add(dataGridView1);
             PanelOfButton.Location = new Point(174, 44);
             PanelOfButton.Name = "PanelOfButton";
             PanelOfButton.Size = new Size(1702, 1016);
             PanelOfButton.TabIndex = 2;
             PanelOfButton.Paint += PanelOfButton_Paint;
+            // 
+            // panel2
+            // 
+            panel2.BackColor = Color.FromArgb(252, 255, 242);
+            panel2.Controls.Add(overlayButton);
+            panel2.Controls.Add(rescheduleButton);
+            panel2.Location = new Point(15, 284);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(201, 155);
+            panel2.TabIndex = 2;
+            // 
+            // overlayButton
+            // 
+            overlayButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            overlayButton.Location = new Point(38, 87);
+            overlayButton.Name = "overlayButton";
+            overlayButton.Size = new Size(120, 56);
+            overlayButton.TabIndex = 1;
+            overlayButton.Text = "Аналіз накладк";
+            overlayButton.UseVisualStyleBackColor = true;
+            overlayButton.Click += overlayButton_Click;
+            // 
+            // rescheduleButton
+            // 
+            rescheduleButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            rescheduleButton.Location = new Point(38, 16);
+            rescheduleButton.Name = "rescheduleButton";
+            rescheduleButton.Size = new Size(120, 55);
+            rescheduleButton.TabIndex = 0;
+            rescheduleButton.Text = "Перенести на завтра";
+            rescheduleButton.UseVisualStyleBackColor = true;
+            rescheduleButton.Click += rescheduleButton_Click;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = Color.FromArgb(252, 255, 242);
+            panel1.Controls.Add(deleteButton);
+            panel1.Controls.Add(editButton);
+            panel1.Location = new Point(15, 75);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(201, 125);
+            panel1.TabIndex = 1;
+            // 
+            // deleteButton
+            // 
+            deleteButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            deleteButton.Location = new Point(38, 77);
+            deleteButton.Name = "deleteButton";
+            deleteButton.Size = new Size(120, 29);
+            deleteButton.TabIndex = 1;
+            deleteButton.Text = "Видалити";
+            deleteButton.UseVisualStyleBackColor = true;
+            deleteButton.Click += deleteButton_Click;
+            // 
+            // editButton
+            // 
+            editButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            editButton.Location = new Point(38, 20);
+            editButton.Name = "editButton";
+            editButton.Size = new Size(120, 29);
+            editButton.TabIndex = 0;
+            editButton.Text = "Редагувати";
+            editButton.UseVisualStyleBackColor = true;
+            editButton.Click += editButton_Click;
             // 
             // dataGridView1
             // 
@@ -86,15 +160,20 @@
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { TitleColumn, DescColumn, PlaceColumn, DateOfColumn, TimeOfColumn, DurationColumn, DateOfEnding });
             dataGridView1.Location = new Point(233, 0);
             dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.Size = new Size(1469, 1016);
             dataGridView1.TabIndex = 0;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            dataGridView1.CellValidating += dataGridView1_CellValidating_1;
             // 
             // TitleColumn
             // 
             TitleColumn.HeaderText = "Назва справи";
             TitleColumn.MinimumWidth = 6;
             TitleColumn.Name = "TitleColumn";
+            TitleColumn.ReadOnly = true;
+            TitleColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             TitleColumn.Width = 150;
             // 
             // DescColumn
@@ -102,6 +181,8 @@
             DescColumn.HeaderText = "Опис справи";
             DescColumn.MinimumWidth = 6;
             DescColumn.Name = "DescColumn";
+            DescColumn.ReadOnly = true;
+            DescColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             DescColumn.Width = 600;
             // 
             // PlaceColumn
@@ -109,6 +190,8 @@
             PlaceColumn.HeaderText = "Місце справи";
             PlaceColumn.MinimumWidth = 6;
             PlaceColumn.Name = "PlaceColumn";
+            PlaceColumn.ReadOnly = true;
+            PlaceColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             PlaceColumn.Width = 175;
             // 
             // DateOfColumn
@@ -116,6 +199,8 @@
             DateOfColumn.HeaderText = "Дата ";
             DateOfColumn.MinimumWidth = 6;
             DateOfColumn.Name = "DateOfColumn";
+            DateOfColumn.ReadOnly = true;
+            DateOfColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             DateOfColumn.Width = 125;
             // 
             // TimeOfColumn
@@ -123,6 +208,8 @@
             TimeOfColumn.HeaderText = "Час ";
             TimeOfColumn.MinimumWidth = 6;
             TimeOfColumn.Name = "TimeOfColumn";
+            TimeOfColumn.ReadOnly = true;
+            TimeOfColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             TimeOfColumn.Width = 125;
             // 
             // DurationColumn
@@ -130,6 +217,8 @@
             DurationColumn.HeaderText = "Тривалість";
             DurationColumn.MinimumWidth = 6;
             DurationColumn.Name = "DurationColumn";
+            DurationColumn.ReadOnly = true;
+            DurationColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
             DurationColumn.Width = 125;
             // 
             // DateOfEnding
@@ -137,6 +226,8 @@
             DateOfEnding.HeaderText = "Дата закінчення";
             DateOfEnding.MinimumWidth = 6;
             DateOfEnding.Name = "DateOfEnding";
+            DateOfEnding.ReadOnly = true;
+            DateOfEnding.SortMode = DataGridViewColumnSortMode.NotSortable;
             DateOfEnding.Width = 125;
             // 
             // DiaryMain
@@ -155,6 +246,8 @@
             ((System.ComponentModel.ISupportInitialize)DiaryButton).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             PanelOfButton.ResumeLayout(false);
+            panel2.ResumeLayout(false);
+            panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
@@ -165,6 +258,7 @@
         private PictureBox pictureBox1;
         private Panel PanelOfButton;
         private DataGridView dataGridView1;
+        private Panel panel1;
         private DataGridViewTextBoxColumn TitleColumn;
         private DataGridViewTextBoxColumn DescColumn;
         private DataGridViewTextBoxColumn PlaceColumn;
@@ -172,5 +266,10 @@
         private DataGridViewTextBoxColumn TimeOfColumn;
         private DataGridViewTextBoxColumn DurationColumn;
         private DataGridViewTextBoxColumn DateOfEnding;
+        private Button editButton;
+        private Panel panel2;
+        private Button overlayButton;
+        private Button rescheduleButton;
+        private Button deleteButton;
     }
 }
