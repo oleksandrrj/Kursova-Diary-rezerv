@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Курсова_Робота__Щоденник_
 {
@@ -23,6 +24,7 @@ namespace Курсова_Робота__Щоденник_
         }
 
         List<DiaryEntry> entries = new List<DiaryEntry>();
+        private string filePath = "diary_data.xml";
 
         public DiaryMain()
         {
@@ -35,9 +37,71 @@ namespace Курсова_Робота__Щоденник_
             dataGridView1.EditMode = DataGridViewEditMode.EditProgrammatically;
         }
 
+        private void SaveData()
+        {
+            try
+            {
+                dataGridView1.EndEdit();
+                DataTable dt = new DataTable("DiaryEntries");
+
+                foreach (DataGridViewColumn col in dataGridView1.Columns)
+                {
+                    dt.Columns.Add(col.Name);
+                }
+
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (!row.IsNewRow)
+                    {
+                        DataRow dr = dt.NewRow();
+                        foreach (DataGridViewCell cell in row.Cells)
+                        {
+                            dr[cell.ColumnIndex] = cell.Value ?? string.Empty;
+                        }
+                        dt.Rows.Add(dr);
+                    }
+                }
+                dt.WriteXml(filePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Помилка при збереженні: " + ex.Message);
+            }
+        }
+
+        private void LoadData()
+        {
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    DataTable dt = new DataTable("DiaryEntries");
+
+                    foreach (DataGridViewColumn col in dataGridView1.Columns)
+                    {
+                        dt.Columns.Add(col.Name);
+                    }
+
+                    dt.ReadXml(filePath);
+
+                    dataGridView1.Rows.Clear();
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        // Додаємо знак оклику після ItemArray
+                        dataGridView1.Rows.Add(dr.ItemArray!);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Помилка при завантаженні: " + ex.Message);
+                }
+            }
+        }
         private void DiaryMain_FormClosed(object sender, FormClosedEventArgs e)
         {
+            SaveData();
             Application.Exit();
+
         }
 
         private void DiaryButton_Click(object sender, EventArgs e)
@@ -70,7 +134,10 @@ namespace Курсова_Робота__Щоденник_
         }
 
 
-        private void DiaryMain_Load(object sender, EventArgs e) { }
+        private void DiaryMain_Load(object sender, EventArgs e)
+        {
+            LoadData();
+        }
         private void PanelOfButton_Paint(object sender, PaintEventArgs e) { }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
 
@@ -311,45 +378,82 @@ namespace Курсова_Робота__Щоденник_
 
         private void cloneButton_Click(object sender, EventArgs e)
         {
-            // 1. Перевіряємо, чи є виділені клітинки
             if (dataGridView1.SelectedCells.Count > 0)
             {
-                // Беремо індекс рядка, з якого хочемо копіювати (з першої виділеної клітинки)
-                int currentRowIndex = dataGridView1.SelectedCells[0].RowIndex;
-                DataGridViewRow sourceRow = dataGridView1.Rows[currentRowIndex];
+                // 1. Групуємо всі виділені клітинки за їхніми рядками
+                var selectedRowsGroups = dataGridView1.SelectedCells
+                    .Cast<DataGridViewCell>()
+                    .GroupBy(c => c.RowIndex)
+                    .OrderBy(g => g.Key)
+                    .ToList();
 
-                if (sourceRow.IsNewRow) return;
+                // Список для нових клітинок (використовуємо nullable типи)
+                List<DataGridViewCell> cellsToSelect = new List<DataGridViewCell>();
 
-                // 2. Створюємо новий рядок
-                int newRowIndex = dataGridView1.Rows.Add();
-                DataGridViewRow newRow = dataGridView1.Rows[newRowIndex];
-
-                // 3. Список назв усіх твоїх стовпців
-                string[] columnNames = {
-            "TitleColumn", "DescColumn", "PlaceColumn",
-            "DateOfColumn", "TimeOfColumn", "DurationColumn", "DateOfEnding"
-        };
-
-                // 4. Проходимо по кожному стовпцю
-                foreach (string colName in columnNames)
+                foreach (var rowGroup in selectedRowsGroups)
                 {
-                    // Перевіряємо, чи виділив користувач саме цю клітинку в початковому рядку
-                    if (sourceRow.Cells[colName].Selected)
+                    int sourceRowIndex = rowGroup.Key;
+                    DataGridViewRow sourceRow = dataGridView1.Rows[sourceRowIndex];
+                    if (sourceRow.IsNewRow) continue;
+
+                    // Дозволяємо null значення в нашому списку (object?)
+                    var copiedData = new List<(string colName, object? value)>();
+                    foreach (DataGridViewCell cell in rowGroup)
                     {
-                        // Копіюємо значення, тільки якщо клітинка була виділена
-                        newRow.Cells[colName].Value = sourceRow.Cells[colName].Value;
+                        copiedData.Add((dataGridView1.Columns[cell.ColumnIndex].Name!, cell.Value));
+                    }
+
+                    // 2. Шукаємо вільне місце нижче
+                    int targetRowIndex = -1;
+                    for (int i = sourceRowIndex + 1; i < dataGridView1.Rows.Count; i++)
+                    {
+                        var row = dataGridView1.Rows[i];
+                        if (row.IsNewRow) continue;
+
+                        bool canInsertHere = true;
+                        foreach (var item in copiedData)
+                        {
+                            var targetValue = row.Cells[item.colName].Value;
+                            if (targetValue != null && !string.IsNullOrWhiteSpace(targetValue.ToString()))
+                            {
+                                canInsertHere = false;
+                                break;
+                            }
+                        }
+
+                        if (canInsertHere)
+                        {
+                            targetRowIndex = i;
+                            break;
+                        }
+                    }
+
+                    // 3. Якщо місця немає то додаємо в кінець
+                    if (targetRowIndex == -1)
+                    {
+                        targetRowIndex = dataGridView1.Rows.Add();
+                    }
+
+                    // 4. Вставляємо дані
+                    DataGridViewRow targetRow = dataGridView1.Rows[targetRowIndex];
+                    foreach (var item in copiedData)
+                    {
+                        targetRow.Cells[item.colName].Value = item.value;
+                        cellsToSelect.Add(targetRow.Cells[item.colName]);
                     }
                 }
 
-                // 5. Візуальне підтвердження
+                // 5. Оновлюємо виділення
                 dataGridView1.ClearSelection();
-                newRow.Selected = true;
-            }
-            else
-            {
-                MessageBox.Show("Виділіть клітинки, які ви хочете продублювати!", "Увага");
+                foreach (var newCell in cellsToSelect)
+                {
+                    newCell.Selected = true;
+                }
+
+                dataGridView1.Focus();
             }
         }
+
 
         private void IntervalTimeBox_TextChanged(object sender, EventArgs e)
         {
