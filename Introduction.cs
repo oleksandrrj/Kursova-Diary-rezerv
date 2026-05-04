@@ -1,8 +1,8 @@
 namespace Курсова_Робота__Щоденник_
 {
-    public partial class Form1 : Form
+    public partial class Introduction : Form
     {
-        public Form1()
+        public Introduction()
         {
             InitializeComponent();
             this.WindowState = FormWindowState.Maximized;

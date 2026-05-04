@@ -1,6 +1,6 @@
 ﻿namespace Курсова_Робота__Щоденник_
 {
-    partial class Form1
+    partial class Introduction
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Introduction));
             panel1 = new Panel();
             button1 = new Button();
             panel4 = new Panel();
@@ -335,7 +335,7 @@
             pictureBox6.TabIndex = 14;
             pictureBox6.TabStop = false;
             // 
-            // Form1
+            // Introduction
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -344,8 +344,8 @@
             Controls.Add(pictureBox6);
             Controls.Add(pictureBox5);
             Controls.Add(panel1);
-            Name = "Form1";
-            Text = "Form1";
+            Name = "Introduction";
+            Text = "Щоденник";
             Load += Form1_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();

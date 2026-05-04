@@ -240,7 +240,7 @@
             Controls.Add(pictureBox1);
             Controls.Add(DiaryButton);
             Name = "DiaryMain";
-            Text = "DiaryMain";
+            Text = "Щоденник";
             FormClosed += DiaryMain_FormClosed;
             Load += DiaryMain_Load;
             ((System.ComponentModel.ISupportInitialize)DiaryButton).EndInit();
