@@ -49,6 +49,8 @@
             overlayButton = new Button();
             rescheduleButton = new Button();
             panel1 = new Panel();
+            DownButton = new Button();
+            UpButton = new Button();
             cloneButton = new Button();
             deleteButton = new Button();
             editButton = new Button();
@@ -117,7 +119,7 @@
             panel4.Controls.Add(stopButton);
             panel4.Controls.Add(startButton);
             panel4.Controls.Add(IntervalTimeBox);
-            panel4.Location = new Point(15, 845);
+            panel4.Location = new Point(15, 824);
             panel4.Name = "panel4";
             panel4.Size = new Size(201, 127);
             panel4.TabIndex = 3;
@@ -156,7 +158,7 @@
             // 
             reminderLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             reminderLabel.ForeColor = Color.FromArgb(74, 0, 4);
-            reminderLabel.Location = new Point(42, 781);
+            reminderLabel.Location = new Point(42, 760);
             reminderLabel.Name = "reminderLabel";
             reminderLabel.Size = new Size(145, 61);
             reminderLabel.TabIndex = 7;
@@ -167,7 +169,7 @@
             planLabel.AutoSize = true;
             planLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             planLabel.ForeColor = Color.FromArgb(74, 0, 4);
-            planLabel.Location = new Point(28, 521);
+            planLabel.Location = new Point(18, 549);
             planLabel.Name = "planLabel";
             planLabel.Size = new Size(192, 28);
             planLabel.TabIndex = 6;
@@ -253,7 +255,7 @@
             panel2.BackColor = Color.FromArgb(252, 255, 242);
             panel2.Controls.Add(overlayButton);
             panel2.Controls.Add(rescheduleButton);
-            panel2.Location = new Point(15, 574);
+            panel2.Location = new Point(15, 589);
             panel2.Name = "panel2";
             panel2.Size = new Size(201, 155);
             panel2.TabIndex = 2;
@@ -283,13 +285,37 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(252, 255, 242);
+            panel1.Controls.Add(DownButton);
+            panel1.Controls.Add(UpButton);
             panel1.Controls.Add(cloneButton);
             panel1.Controls.Add(deleteButton);
             panel1.Controls.Add(editButton);
             panel1.Location = new Point(15, 317);
             panel1.Name = "panel1";
-            panel1.Size = new Size(201, 201);
+            panel1.Size = new Size(201, 214);
             panel1.TabIndex = 1;
+            // 
+            // DownButton
+            // 
+            DownButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            DownButton.Location = new Point(60, 170);
+            DownButton.Name = "DownButton";
+            DownButton.Size = new Size(61, 29);
+            DownButton.TabIndex = 4;
+            DownButton.Text = "⬇";
+            DownButton.UseVisualStyleBackColor = true;
+            DownButton.Click += DownButton_Click;
+            // 
+            // UpButton
+            // 
+            UpButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            UpButton.Location = new Point(60, 126);
+            UpButton.Name = "UpButton";
+            UpButton.Size = new Size(61, 29);
+            UpButton.TabIndex = 3;
+            UpButton.Text = "⬆";
+            UpButton.UseVisualStyleBackColor = true;
+            UpButton.Click += UpButton_Click;
             // 
             // cloneButton
             // 
@@ -467,5 +493,7 @@
         private System.Windows.Forms.Timer timerRemind;
         private Button searchTomorrowButton;
         private Button searchYesterdayButton;
+        private Button UpButton;
+        private Button DownButton;
     }
 }
