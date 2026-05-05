@@ -268,7 +268,7 @@ namespace Курсова_Робота__Щоденник_
                     if (string.IsNullOrEmpty(dateStr) || string.IsNullOrEmpty(timeStr) || string.IsNullOrEmpty(durationStr))
                         continue;
 
-                    // Решта коду без змін...
+                    
                     DateTime start = DateTime.Parse($"{dateStr} {timeStr}");
                     TimeSpan duration = TimeSpan.Parse(durationStr);
                     DateTime end = start.Add(duration);
@@ -493,59 +493,58 @@ namespace Курсова_Робота__Щоденник_
 
         private void timerRemind_Tick(object sender, EventArgs e)
         {
-            // 1. Тимчасово зупиняємо таймер, щоб вікна не накопичувалися, поки ти читаєш перше
-            timerRemind.Stop();
-
             DateTime now = DateTime.Now;
-            DataGridViewRow? nearestRow = null;
+            DataGridViewRow nearestRow = null!;
             TimeSpan minDiff = TimeSpan.MaxValue;
 
+            // 1. Шукаємо НАЙБЛИЖЧУ справу серед усіх записів
             foreach (DataGridViewRow row in dataGridView1.Rows)
             {
                 if (row.IsNewRow) continue;
 
-                var dateCell = row.Cells["DateOfColumn"].Value;
-                var timeCell = row.Cells["TimeOfColumn"].Value;
+                var dateVal = row.Cells["DateOfColumn"].Value?.ToString();
+                var timeVal = row.Cells["TimeOfColumn"].Value?.ToString();
 
-                if (dateCell != null && timeCell != null)
+                if (!string.IsNullOrEmpty(dateVal) && !string.IsNullOrEmpty(timeVal))
                 {
-                    string dateStr = dateCell.ToString() ?? "";
-                    string timeStr = timeCell.ToString() ?? "";
-
-                    if (DateTime.TryParse($"{dateStr} {timeStr}", out DateTime taskTime))
+                    try
                     {
-                        if (taskTime > now)
+                        DateTime eventTime = DateTime.Parse($"{dateVal} {timeVal}");
+                        TimeSpan diff = eventTime - now;
+
+                        // Нас цікавлять тільки справи у майбутньому
+                        if (diff.TotalSeconds > 0 && diff < minDiff)
                         {
-                            TimeSpan diff = taskTime - now;
-                            if (diff < minDiff)
-                            {
-                                minDiff = diff;
-                                nearestRow = row;
-                            }
+                            minDiff = diff;
+                            nearestRow = row;
                         }
                     }
+                    catch { continue; }
                 }
             }
 
-            // 2. Якщо знайшли справу показуємо MessageBox
+            // 2. Якщо найближчу справу знайдено виводимо нагадування
             if (nearestRow != null)
             {
-                string title = nearestRow.Cells["TitleColumn"].Value?.ToString() ?? "Без назви";
-                string time = nearestRow.Cells["TimeOfColumn"].Value?.ToString() ?? "--:--";
+                string title = nearestRow.Cells["TitleColumn"].Value?.ToString() ?? "Подія";
+
+                // Формуємо текст, каже скільки залишилося (дні, години, хвилини)
+                string timeLeft = "";
+                if (minDiff.Days > 0) timeLeft += $"{minDiff.Days} дн. ";
+                timeLeft += $"{minDiff.Hours} год. {minDiff.Minutes} хв.";
+
+                // Зупиняємо таймер на час показу вікна, щоб вони не накопичувались
+                timerRemind.Stop();
 
                 MessageBox.Show(
-                    $"🔔 НАГАДУВАННЯ\n\n" +
-                    $"Найближча справа: \"{title}\"\n" +
-                    $"Час: {time}\n" +
-                    $"Залишилося чекати: {minDiff.Hours} год. {minDiff.Minutes} хв.",
-                    "Мій Щоденник",
+                    $"НАЙБЛИЖЧА СПРАВА: {title}\n\nДо неї залишилось: {timeLeft}",
+                    "Нагадування",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 );
-            }
 
-            // 3. Після того, як кнатиснуто "ОК", запускаємо таймер знову для наступного кола
-            timerRemind.Start();
+                timerRemind.Start();
+            }
         }
     }
-}
+    }
