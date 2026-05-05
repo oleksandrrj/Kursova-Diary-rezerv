@@ -41,6 +41,8 @@
             manageLabel = new Label();
             labelSearch = new Label();
             panel3 = new Panel();
+            searchYesterdayButton = new Button();
+            searchTomorrowButton = new Button();
             searchButton = new Button();
             searchTimePicker = new DateTimePicker();
             panel2 = new Panel();
@@ -115,7 +117,7 @@
             panel4.Controls.Add(stopButton);
             panel4.Controls.Add(startButton);
             panel4.Controls.Add(IntervalTimeBox);
-            panel4.Location = new Point(13, 741);
+            panel4.Location = new Point(15, 845);
             panel4.Name = "panel4";
             panel4.Size = new Size(201, 127);
             panel4.TabIndex = 3;
@@ -154,7 +156,7 @@
             // 
             reminderLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             reminderLabel.ForeColor = Color.FromArgb(74, 0, 4);
-            reminderLabel.Location = new Point(43, 677);
+            reminderLabel.Location = new Point(42, 781);
             reminderLabel.Name = "reminderLabel";
             reminderLabel.Size = new Size(145, 61);
             reminderLabel.TabIndex = 7;
@@ -165,7 +167,7 @@
             planLabel.AutoSize = true;
             planLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             planLabel.ForeColor = Color.FromArgb(74, 0, 4);
-            planLabel.Location = new Point(28, 450);
+            planLabel.Location = new Point(28, 521);
             planLabel.Name = "planLabel";
             planLabel.Size = new Size(192, 28);
             planLabel.TabIndex = 6;
@@ -176,7 +178,7 @@
             manageLabel.AutoSize = true;
             manageLabel.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 204);
             manageLabel.ForeColor = Color.FromArgb(74, 0, 4);
-            manageLabel.Location = new Point(53, 220);
+            manageLabel.Location = new Point(53, 277);
             manageLabel.Name = "manageLabel";
             manageLabel.Size = new Size(123, 28);
             manageLabel.TabIndex = 5;
@@ -196,17 +198,41 @@
             // panel3
             // 
             panel3.BackColor = Color.FromArgb(252, 255, 242);
+            panel3.Controls.Add(searchYesterdayButton);
+            panel3.Controls.Add(searchTomorrowButton);
             panel3.Controls.Add(searchButton);
             panel3.Controls.Add(searchTimePicker);
             panel3.Location = new Point(15, 54);
             panel3.Name = "panel3";
-            panel3.Size = new Size(201, 144);
+            panel3.Size = new Size(201, 201);
             panel3.TabIndex = 2;
+            // 
+            // searchYesterdayButton
+            // 
+            searchYesterdayButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            searchYesterdayButton.Location = new Point(16, 155);
+            searchYesterdayButton.Name = "searchYesterdayButton";
+            searchYesterdayButton.Size = new Size(169, 29);
+            searchYesterdayButton.TabIndex = 4;
+            searchYesterdayButton.Text = "Вчорашні справи";
+            searchYesterdayButton.UseVisualStyleBackColor = true;
+            searchYesterdayButton.Click += searchYesterdayButton_Click;
+            // 
+            // searchTomorrowButton
+            // 
+            searchTomorrowButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
+            searchTomorrowButton.Location = new Point(16, 106);
+            searchTomorrowButton.Name = "searchTomorrowButton";
+            searchTomorrowButton.Size = new Size(169, 29);
+            searchTomorrowButton.TabIndex = 3;
+            searchTomorrowButton.Text = "Справи на завтра";
+            searchTomorrowButton.UseVisualStyleBackColor = true;
+            searchTomorrowButton.Click += searchTomorrowButton_Click;
             // 
             // searchButton
             // 
             searchButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            searchButton.Location = new Point(41, 86);
+            searchButton.Location = new Point(38, 62);
             searchButton.Name = "searchButton";
             searchButton.Size = new Size(120, 29);
             searchButton.TabIndex = 2;
@@ -227,7 +253,7 @@
             panel2.BackColor = Color.FromArgb(252, 255, 242);
             panel2.Controls.Add(overlayButton);
             panel2.Controls.Add(rescheduleButton);
-            panel2.Location = new Point(15, 503);
+            panel2.Location = new Point(15, 574);
             panel2.Name = "panel2";
             panel2.Size = new Size(201, 155);
             panel2.TabIndex = 2;
@@ -260,15 +286,15 @@
             panel1.Controls.Add(cloneButton);
             panel1.Controls.Add(deleteButton);
             panel1.Controls.Add(editButton);
-            panel1.Location = new Point(15, 260);
+            panel1.Location = new Point(15, 317);
             panel1.Name = "panel1";
-            panel1.Size = new Size(201, 173);
+            panel1.Size = new Size(201, 201);
             panel1.TabIndex = 1;
             // 
             // cloneButton
             // 
             cloneButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            cloneButton.Location = new Point(38, 125);
+            cloneButton.Location = new Point(38, 82);
             cloneButton.Name = "cloneButton";
             cloneButton.Size = new Size(120, 29);
             cloneButton.TabIndex = 2;
@@ -279,7 +305,7 @@
             // deleteButton
             // 
             deleteButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            deleteButton.Location = new Point(38, 77);
+            deleteButton.Location = new Point(38, 47);
             deleteButton.Name = "deleteButton";
             deleteButton.Size = new Size(120, 29);
             deleteButton.TabIndex = 1;
@@ -290,7 +316,7 @@
             // editButton
             // 
             editButton.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 204);
-            editButton.Location = new Point(38, 20);
+            editButton.Location = new Point(40, 12);
             editButton.Name = "editButton";
             editButton.Size = new Size(120, 29);
             editButton.TabIndex = 0;
@@ -439,5 +465,7 @@
         private Button startButton;
         private TextBox IntervalTimeBox;
         private System.Windows.Forms.Timer timerRemind;
+        private Button searchTomorrowButton;
+        private Button searchYesterdayButton;
     }
 }

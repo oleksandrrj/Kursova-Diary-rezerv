@@ -268,7 +268,7 @@ namespace Курсова_Робота__Щоденник_
                     if (string.IsNullOrEmpty(dateStr) || string.IsNullOrEmpty(timeStr) || string.IsNullOrEmpty(durationStr))
                         continue;
 
-                    
+
                     DateTime start = DateTime.Parse($"{dateStr} {timeStr}");
                     TimeSpan duration = TimeSpan.Parse(durationStr);
                     DateTime end = start.Add(duration);
@@ -546,5 +546,129 @@ namespace Курсова_Робота__Щоденник_
                 timerRemind.Start();
             }
         }
+
+        private void searchTomorrowButton_Click(object sender, EventArgs e)
+        {
+            DateTime tomorrow = DateTime.Now.AddDays(1).Date;
+            bool found = false;
+
+            // Знімаємо всі попередні виділення
+            dataGridView1.ClearSelection();
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                // 2. Отримуємо дату з клітинки рядка
+                var dateValue = row.Cells["DateOfColumn"].Value?.ToString();
+
+                if (!string.IsNullOrEmpty(dateValue))
+                {
+                    try
+                    {
+                        // Перетворюємо текст із таблиці у формат дати
+                        DateTime rowDate = DateTime.Parse(dateValue).Date;
+
+                        // 3. Порівнюємо дату рядка із завтрашньою датою
+                        if (rowDate == tomorrow)
+                        {
+                            row.Selected = true; // Виділяємо рядок, якщо дата завтрашня
+                            found = true;
+                        }
+                    }
+                    catch
+                    {
+                        // Якщо формат дати в таблиці неправильний, просто пропускаємо
+                        continue;
+                    }
+                }
+            }
+
+            // 4. Якщо нічого не знайшли то показуємо повідомлення
+            if (!found)
+            {
+                MessageBox.Show(
+                    "На завтра справ немає!",
+                    "Пошук",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+            else
+            {
+                // Якщо знайшли, можна сфокусуватися на першому знайденому рядку
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.Selected)
+                    {
+                        dataGridView1.FirstDisplayedScrollingRowIndex = row.Index;
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        private void searchYesterdayButton_Click(object sender, EventArgs e)
+        {
+            // 1. Отримуємо вчорашню дату 
+            DateTime yesterday = DateTime.Now.AddDays(-1).Date;
+            bool found = false;
+
+            // Знімаємо старі виділення
+            dataGridView1.ClearSelection();
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                // Отримуємо дату з колонки 
+                var dateValue = row.Cells["DateOfColumn"].Value?.ToString();
+
+                if (!string.IsNullOrEmpty(dateValue))
+                {
+                    try
+                    {
+                        // Перетворюємо текст у дату та беремо тільки частину з датою (без часу)
+                        DateTime rowDate = DateTime.Parse(dateValue).Date;
+
+                        // 2. Якщо дата в рядку збігається з вчорашньою
+                        if (rowDate == yesterday)
+                        {
+                            row.Selected = true;
+                            found = true;
+                        }
+                    }
+                    catch
+                    {
+                        // Пропускаємо рядки з неправильним форматом
+                        continue;
+                    }
+                }
+            }
+
+            // 3. Виводимо результат
+            if (!found)
+            {
+                MessageBox.Show(
+                    "Вчорашніх справ немає!",
+                    "Пошук",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
+            else
+            {
+                // Скролимо до першого знайденого запису
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (row.Selected)
+                    {
+                        dataGridView1.FirstDisplayedScrollingRowIndex = row.Index;
+                        break;
+                    }
+                }
+            }
+        }
     }
-    }
+}
